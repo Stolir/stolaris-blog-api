@@ -17,7 +17,7 @@ model User {
   username      String    @unique
   password_hash String
   name          String
-  email         String?
+  email         String?   @unique
   isAuthor      Boolean   @default(false)
   posts         Post[]
   comments      Comment[]

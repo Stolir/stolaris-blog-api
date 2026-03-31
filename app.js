@@ -11,7 +11,8 @@ const path = require("node:path");
 const passport = require("passport");
 
 // Require routes
-// ...
+const registerRouter = require("./routes/registerRouter");
+const loginRouter = require("./routes/loginRouter");
 
 // Define app related
 const app = express();
@@ -25,7 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 // ...
 
 // Use routes
-// ....
+app.use("/register", registerRouter);
+app.use("/login", loginRouter);
 // Generic not found route
 // Error-catching route
 
