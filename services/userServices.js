@@ -1,5 +1,11 @@
 const { prisma } = require("../lib/prisma");
 
+const findUserById = (id) => {
+  return prisma.user.findUnique({
+    where: { id },
+  });
+};
+
 const findUserByUsername = (username) => {
   return prisma.user.findUnique({
     where: { username },
@@ -24,4 +30,9 @@ const createUser = (data) => {
     },
   });
 };
-module.exports = { findUserByUsername, findUserByEmail, createUser };
+module.exports = {
+  findUserByUsername,
+  findUserByEmail,
+  createUser,
+  findUserById,
+};

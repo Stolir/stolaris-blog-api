@@ -28,11 +28,11 @@ model Post {
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
   title       String
-  body        String
+  slug        String   @unique
+  content     Json
+  status      Status   @default(DRAFT)
   createdAt   DateTime @default(now())
   lastUpdated DateTime @updatedAt
-
-  @@unique([id, userId])
 }
 
 model Comment {
@@ -44,4 +44,11 @@ model Comment {
   parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   parentId  Int?
   replies   Comment[] @relation("CommentReplies")
+}
+
+enum Status {
+  PUBLISHED
+  UNPUBLISHED
+  ARCHIVED
+  DRAFT
 }
