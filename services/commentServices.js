@@ -7,6 +7,14 @@ const findCommentById = (id) => {
   });
 };
 
+const findCommentsByArticleId = (articleId) => {
+  return prisma.comment.findMany({
+    where: {
+      articleId,
+    },
+  });
+};
+
 // Create
 const createComment = (data) => {
   return prisma.comment.create({
@@ -15,7 +23,7 @@ const createComment = (data) => {
 };
 
 // Delete
-const deleteComment = (id) => {
+const deleteCommentById = (id) => {
   return prisma.comment.delete({
     where: {
       id,
@@ -24,7 +32,7 @@ const deleteComment = (id) => {
 };
 
 // Update
-const updateComment = (id, data) => {
+const updateCommentById = (id, data) => {
   return prisma.comment.update({
     where: {
       id,
@@ -35,7 +43,8 @@ const updateComment = (id, data) => {
 
 module.exports = {
   findCommentById,
+  findCommentsByArticleId,
   createComment,
-  deleteComment,
-  updateComment,
+  deleteCommentById,
+  updateCommentById,
 };

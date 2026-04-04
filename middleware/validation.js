@@ -98,3 +98,20 @@ module.exports.validateLogin = [
     next();
   },
 ];
+
+module.exports.validateComment = [
+  body("text")
+    .trim()
+    .notEmpty()
+    .withMessage("Comment cannot be empty")
+    .bail()
+    .isLength({ max: 1000 })
+    .withMessage("Comment must be between 1-1000 characters"),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];

@@ -1,17 +1,23 @@
 const { Router } = require("express");
 const {
-  getAllArticles,
+  getPublishedArticles,
   getArticle,
   deleteComment,
 } = require("../controllers/articleController");
 const { requireAuth, requireOwner } = require("../middleware/auth");
 const { findCommentById } = require("../services/commentServices");
+const { validateComment } = require("../middleware/validation");
 
 const articleRouter = Router();
 
-articleRouter.get("/", getAllArticles);
+articleRouter.get("/", getPublishedArticles);
 articleRouter.get("/:slug", getArticle);
-articleRouter.post("/:slug/comments", requireAuth, postComment);
+articleRouter.post(
+  "/:slug/comments",
+  requireAuth,
+  validateComment,
+  postComment,
+);
 articleRouter.delete(
   "/:slug/comments/:commentId",
   requireAuth,

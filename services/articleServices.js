@@ -12,12 +12,18 @@ const findArticlesByStatus = (status) => {
 
 // Get by ID
 const findArticleById = (id) => {
-  return prisma.article.findUnique({ where: { id } });
+  return prisma.article.findUnique({
+    where: { id },
+    include: { comments: true },
+  });
 };
 
 // Get by slug
 const findArticleBySlug = (slug) => {
-  return prisma.article.findUnique({ where: { slug } });
+  return prisma.article.findUnique({
+    where: { slug },
+    include: { comments: true },
+  });
 };
 // Create
 const createArticle = (data) => {
