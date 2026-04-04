@@ -14,6 +14,7 @@ const passport = require("passport");
 const registerRouter = require("./routes/registerRouter");
 const authRouter = require("./routes/authRouter");
 const authorRouter = require("./routes/authorRouter");
+const articleRouter = require("./routes/articleRouter");
 
 // Define app related
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/register", registerRouter);
 app.use("/auth", authRouter);
 app.use("/api/author", authorRouter);
+app.use("/api/articles", articleRouter);
 // Generic not found route
 // Error-catching route
 

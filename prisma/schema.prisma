@@ -19,11 +19,11 @@ model User {
   name          String
   email         String?   @unique
   isAuthor      Boolean   @default(false)
-  posts         Post[]
+  articles      Article[]
   comments      Comment[]
 }
 
-model Post {
+model Article {
   id          Int      @id @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id])
   userId      Int

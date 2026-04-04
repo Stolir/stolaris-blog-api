@@ -1,5 +1,12 @@
 const { prisma } = require("../lib/prisma");
 
+// Get
+const findCommentById = (id) => {
+  return prisma.comment.findUnique({
+    where: { id },
+  });
+};
+
 // Create
 const createComment = (data) => {
   return prisma.comment.create({
@@ -27,6 +34,7 @@ const updateComment = (id, data) => {
 };
 
 module.exports = {
+  findCommentById,
   createComment,
   deleteComment,
   updateComment,

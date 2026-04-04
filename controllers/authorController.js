@@ -1,4 +1,4 @@
-// Retrieves all posts regardless of their status
-const getAllPosts = (req, res, next) => {};
+// Retrieves all articles regardless of their status
+const getAllArticles = (req, res, next) => {};
 
-module.exports = { getAllPosts };
+module.exports = { getAllArticles };
