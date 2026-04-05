@@ -2,16 +2,21 @@ const { matchedData } = require("express-validator");
 const {
   findArticlesByStatus,
   findArticleBySlug,
+  findAllArticles,
+  createArticle,
+  updateArticleById,
+  deleteArticleById,
 } = require("../services/articleServices");
 const {
   createComment,
   deleteCommentById,
 } = require("../services/commentServices");
+const slugify = require("slugify");
 
 const getPublishedArticles = async (req, res, next) => {
   try {
     const articles = await findArticlesByStatus("PUBLISHED");
-    res.json(articles);
+    return res.json(articles);
   } catch (err) {
     next(err);
   }
@@ -38,7 +43,7 @@ const getArticle = async (req, res, next) => {
         .json({ message: "You are not authorized to access this resource" });
     }
 
-    res.json(article);
+    return res.json(article);
   } catch (err) {
     next(err);
   }
@@ -53,7 +58,7 @@ const postComment = async (req, res, next) => {
       articleId: req.params.articleId ?? null,
       parentId: req.body.parentId ?? null,
     });
-    res.status(201).json(comment);
+    return res.status(201).json(comment);
   } catch (err) {
     next(err);
   }
@@ -63,7 +68,77 @@ const deleteComment = async (req, res, next) => {
   const { commentId } = req.params;
   try {
     await deleteCommentById(commentId);
-    res.sendStatus(204);
+    return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// =========== AUTHOR PROTECTED ACTIONS ==============
+
+// Retrieves all articles regardless of their status
+const getAllArticles = async (req, res, next) => {
+  try {
+    const articles = await findAllArticles();
+    return res.json(articles);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// post new article
+const postArticle = async (req, res, next) => {
+  const { title, content } = matchedData(req);
+  const userId = req.user.id;
+  const slug = slugify(title);
+  try {
+    const article = await createArticle({ userId, title, content, slug });
+    return res.status(201).json(article);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// update article status factory
+const updateArticleStatus = (status) => async (req, res, next) => {
+  try {
+    const article = await updateArticleById(req.params.articleId, { status });
+    return res.json(article);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const publishArticle = updateArticleStatus("PUBLISHED");
+const unpublishArticle = updateArticleStatus("UNPUBLISHED");
+const draftArticle = updateArticleStatus("DRAFT");
+const archiveArticle = updateArticleStatus("ARCHIVE");
+
+// delete article
+const deleteArticle = async (req, res, next) => {
+  const { articleId } = req.params;
+  try {
+    await deleteArticleById(articleId);
+    return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Update Article
+const updateArticle = async (req, res, next) => {
+  let slug;
+  const data = matchedData(req);
+  const { articleId } = req.params;
+  if (data.title) {
+    slug = slugify(data.title);
+  }
+  try {
+    const article = await updateArticleById(articleId, {
+      ...data,
+      ...(slug && { slug }),
+    });
+    return res.json(article);
   } catch (err) {
     next(err);
   }
@@ -74,4 +149,12 @@ module.exports = {
   getPublishedArticles,
   postComment,
   deleteComment,
+  getAllArticles,
+  postArticle,
+  publishArticle,
+  unpublishArticle,
+  draftArticle,
+  archiveArticle,
+  deleteArticle,
+  updateArticle,
 };

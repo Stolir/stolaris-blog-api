@@ -3,12 +3,18 @@ const {
   getPublishedArticles,
   getArticle,
   deleteComment,
+  postComment,
 } = require("../controllers/articleController");
 const { requireAuth, requireOwner } = require("../middleware/auth");
 const { findCommentById } = require("../services/commentServices");
 const { validateComment } = require("../middleware/validation");
 
 const articleRouter = Router();
+const ownerCheck = requireOwner({
+  idParam: "commentId",
+  findById: findCommentById,
+  ownerField: "userId",
+});
 
 articleRouter.get("/", getPublishedArticles);
 articleRouter.get("/:slug", getArticle);
@@ -21,11 +27,7 @@ articleRouter.post(
 articleRouter.delete(
   "/:slug/comments/:commentId",
   requireAuth,
-  requireOwner({
-    idParam: "commentId",
-    findById: findCommentById,
-    ownerField: "userId",
-  }),
+  ownerCheck,
   deleteComment,
 );
 

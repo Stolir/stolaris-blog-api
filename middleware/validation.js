@@ -115,3 +115,26 @@ module.exports.validateComment = [
     next();
   },
 ];
+module.exports.validateArticle = [
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("Title cannot be empty")
+    .bail()
+    .isLength({ max: 100 })
+    .withMessage("Title must be between 1-100 characters"),
+  body("content")
+    .isObject()
+    .withMessage("Content must be a valid object")
+    .custom((value) => {
+      Object.values(value).length > 0;
+    })
+    .withMessage("Content cannot be empty"),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];

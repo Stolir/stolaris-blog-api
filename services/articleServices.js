@@ -32,12 +32,12 @@ const createArticle = (data) => {
   });
 };
 // Delete
-const deleteArticle = (id) => {
+const deleteArticleById = (id) => {
   return prisma.article.delete({ where: { id } });
 };
 
 // Update
-const updateArticle = (id, data) => {
+const updateArticleById = (id, data) => {
   return prisma.article.update({
     where: { id },
     data,
@@ -50,6 +50,6 @@ module.exports = {
   findArticleById,
   findArticleBySlug,
   createArticle,
-  deleteArticle,
-  updateArticle,
+  deleteArticleById,
+  updateArticleById,
 };
