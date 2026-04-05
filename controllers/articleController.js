@@ -63,6 +63,7 @@ const deleteComment = async (req, res, next) => {
   const { commentId } = req.params;
   try {
     await deleteCommentById(commentId);
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }
