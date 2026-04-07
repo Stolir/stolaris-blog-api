@@ -1,5 +1,4 @@
 const passport = require("passport");
-const { findCommentById } = require("../services/commentServices");
 
 const requireAuth = passport.authenticate("jwt", { session: false });
 

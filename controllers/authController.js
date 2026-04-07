@@ -8,8 +8,15 @@ const postLogin = (req, res, next) => {
       return res.status(401).json({ message: info?.message || "Unauthorized" });
     }
     const token = signToken(user);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+    });
+
     return res.json({
-      token,
       user: { id: user.id, username: user.username },
     });
   })(req, res, next);
