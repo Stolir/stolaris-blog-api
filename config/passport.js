@@ -33,8 +33,13 @@ const localStrategy = new LocalStrategy(verifyCallbackLocal);
 passport.use(localStrategy);
 
 // JWT Setup
+
+const cookieExtractor = (req) => {
+  return req?.cookies?.token ?? null;
+};
+
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Authorization: Bearer <token>
+  jwtFromRequest: cookieExtractor,
   secretOrKey: JWT_SECRET,
 };
 const jwtVerifyCallback = async (jwtPayload, done) => {

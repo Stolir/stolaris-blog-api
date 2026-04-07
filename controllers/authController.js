@@ -3,6 +3,7 @@ const { signToken } = require("../lib/authUtils");
 
 const postLogin = (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
+    console.log("Recieved login request");
     if (err) return next(err);
     if (!user) {
       return res.status(401).json({ message: info?.message || "Unauthorized" });
@@ -17,7 +18,7 @@ const postLogin = (req, res, next) => {
     });
 
     return res.json({
-      user: { id: user.id, username: user.username },
+      user: { id: user.id, username: user.username, name: user.name },
     });
   })(req, res, next);
 };
@@ -31,4 +32,11 @@ const postLogout = (req, res) => {
   return res.json({ message: "Logged out successfully" });
 };
 
-module.exports = { postLogin, postLogout };
+const getMe = (req, res, next) => {
+  const user = req.user;
+  return res.json({
+    user: { id: user.id, username: user.username, name: user.name },
+  });
+};
+
+module.exports = { postLogin, postLogout, getMe };

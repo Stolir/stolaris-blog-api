@@ -9,6 +9,8 @@ const path = require("node:path");
 
 // Require auth related
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 // Require routes
 const registerRouter = require("./routes/registerRouter");
@@ -21,11 +23,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Use general middleware
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Custom middleware
-// ...
+// app.use(() => {
+//   console.log("Received request");
+// });
 
 // Use routes
 app.use("/api/register", registerRouter);
