@@ -6,6 +6,7 @@ const {
   createArticle,
   updateArticleById,
   deleteArticleById,
+  findArticlesByQuery,
 } = require("../services/articleServices");
 const {
   createComment,
@@ -44,6 +45,21 @@ const getArticle = async (req, res, next) => {
     }
 
     return res.json(article);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const searchArticles = async (req, res, next) => {
+  const query = req.query.q;
+  let status;
+  if (!req.user || !req.user.isAuthor) {
+    status = "PUBLISHED";
+  }
+  try {
+    console.log("1");
+    const articles = await findArticlesByQuery(query, status || undefined);
+    return res.json(articles);
   } catch (err) {
     next(err);
   }
@@ -147,6 +163,7 @@ const updateArticle = async (req, res, next) => {
 module.exports = {
   getArticle,
   getPublishedArticles,
+  searchArticles,
   postComment,
   deleteComment,
   getAllArticles,

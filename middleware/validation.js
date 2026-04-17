@@ -79,8 +79,8 @@ module.exports.validateLogin = [
     .notEmpty()
     .withMessage("Username is required")
     .bail()
-    .matches(/^[a-zA-Z0-9_-]{3,30}$/)
-    .withMessage("Invalid Username")
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage("Username contains invalid characters")
     .bail()
     .isLength({ min: 3, max: 30 })
     .withMessage("Username must be between 3 and 30 characters"),
@@ -126,10 +126,12 @@ module.exports.validateArticle = [
   body("content")
     .isObject()
     .withMessage("Content must be a valid object")
+    .bail()
     .custom((value) => {
-      Object.values(value).length > 0;
+      return Object.values(value).length > 0;
     })
-    .withMessage("Content cannot be empty"),
+    .withMessage("Content cannot be empty")
+    .bail(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

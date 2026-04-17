@@ -34,9 +34,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Custom middleware
-// app.use(() => {
-//   console.log("Received request");
-// });
+if (process.env.NODE_ENV === "development") {
+  app.use((req, res, next) => {
+    console.log("Received request");
+    console.log(req.body);
+    next();
+  });
+}
 
 // Use routes
 app.use("/api/register", registerRouter);

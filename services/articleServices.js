@@ -25,6 +25,12 @@ const findArticleBySlug = (slug) => {
     include: { comments: true },
   });
 };
+
+const findArticlesByQuery = (query, status) => {
+  return prisma.article.findMany({
+    where: { title: { contains: query, mode: "insensitive" }, status },
+  });
+};
 // Create
 const createArticle = (data) => {
   return prisma.article.create({
@@ -49,6 +55,7 @@ module.exports = {
   findArticlesByStatus,
   findArticleById,
   findArticleBySlug,
+  findArticlesByQuery,
   createArticle,
   deleteArticleById,
   updateArticleById,
