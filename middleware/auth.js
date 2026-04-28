@@ -14,7 +14,7 @@ const requireAuthor = (req, res, next) => {
 const requireOwner = ({ idParam, findById, ownerField }) => {
   return async (req, res, next) => {
     const requesterId = req.user.id;
-    const resourceId = req.params[idParam];
+    const resourceId = Number(req.params[idParam]);
     try {
       const resource = await findById(resourceId);
       if (!resource) {

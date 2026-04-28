@@ -13,6 +13,7 @@ const {
   draftArticle,
   archiveArticle,
   unpublishArticle,
+  getAuthArticle,
 } = require("../controllers/articleController");
 const { findArticleById } = require("../services/articleServices");
 const { validateArticle } = require("../middleware/validation");
@@ -27,6 +28,7 @@ const ownerCheck = requireOwner({
 });
 
 authorRouter.get("/articles", getAllArticles);
+authorRouter.get("/articles/:articleId", ownerCheck, getAuthArticle);
 
 authorRouter.post("/articles", validateArticle, postArticle);
 

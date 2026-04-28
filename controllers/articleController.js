@@ -7,6 +7,7 @@ const {
   updateArticleById,
   deleteArticleById,
   findArticlesByQuery,
+  findArticleById,
 } = require("../services/articleServices");
 const {
   createComment,
@@ -118,7 +119,9 @@ const postArticle = async (req, res, next) => {
 // update article status factory
 const updateArticleStatus = (status) => async (req, res, next) => {
   try {
-    const article = await updateArticleById(req.params.articleId, { status });
+    const article = await updateArticleById(Number(req.params.articleId), {
+      status,
+    });
     return res.json(article);
   } catch (err) {
     next(err);
@@ -128,14 +131,29 @@ const updateArticleStatus = (status) => async (req, res, next) => {
 const publishArticle = updateArticleStatus("PUBLISHED");
 const unpublishArticle = updateArticleStatus("UNPUBLISHED");
 const draftArticle = updateArticleStatus("DRAFT");
-const archiveArticle = updateArticleStatus("ARCHIVE");
+const archiveArticle = updateArticleStatus("ARCHIVED");
 
 // delete article
 const deleteArticle = async (req, res, next) => {
   const { articleId } = req.params;
   try {
-    await deleteArticleById(articleId);
+    await deleteArticleById(Number(articleId));
     return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get article
+const getAuthArticle = async (req, res, next) => {
+  const { articleId } = req.params;
+  try {
+    const article = await findArticleById(Number(articleId));
+    if (!article) {
+      return res.status(404).json({ message: "Article not found" });
+    }
+
+    return res.json(article);
   } catch (err) {
     next(err);
   }
@@ -150,7 +168,7 @@ const updateArticle = async (req, res, next) => {
     slug = slugify(data.title);
   }
   try {
-    const article = await updateArticleById(articleId, {
+    const article = await updateArticleById(Number(articleId), {
       ...data,
       ...(slug && { slug }),
     });
@@ -173,5 +191,6 @@ module.exports = {
   draftArticle,
   archiveArticle,
   deleteArticle,
+  getAuthArticle,
   updateArticle,
 };
