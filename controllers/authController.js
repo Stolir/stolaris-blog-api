@@ -1,5 +1,11 @@
 const passport = require("passport");
 const { signToken } = require("../lib/authUtils");
+const { matchedData } = require("express-validator");
+const { findUserById, updateUser } = require("../services/userServices");
+const {
+  validatePassword,
+  generateHashedPassword,
+} = require("../lib/passwordUtils");
 
 const issueTokenResponse = (res, user) => {
   const token = signToken(user);
@@ -57,6 +63,34 @@ const getMe = (req, res, next) => {
       name: user.name,
     },
   });
+};
+
+const patchUserUpdate = async (req, res, next) => {
+  const data = matchedData(req);
+  const { newPassword, confirmNewPassword, currentPassword, ...rest } = data;
+  const userId = req.user.id;
+  let newHash;
+  try {
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (newPassword || data.email) {
+      // changing password or email requires current password
+      const isValidPass = validatePassword(currentPassword, user.password_hash);
+      if (!isValidPass) {
+        return res.status(400).json({ message: "Incorrect password" });
+      }
+      newHash = generateHashedPassword(newPassword);
+    }
+    const newUser = await updateUser(userId, {
+      ...rest,
+      ...(newHash && { password_hash: newHash }),
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };
 
 module.exports = { postUserLogin, postLogout, getMe, postAuthorLogin };

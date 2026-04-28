@@ -30,9 +30,18 @@ const createUser = (data) => {
     },
   });
 };
+
+const updateUser = (id, data) => {
+  return prisma.user.update({
+    where: { id },
+    data,
+  });
+};
+
 module.exports = {
   findUserByUsername,
   findUserByEmail,
   createUser,
   findUserById,
+  updateUser,
 };
