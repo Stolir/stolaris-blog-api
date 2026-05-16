@@ -55,7 +55,6 @@ const getArticle = async (req, res, next) => {
 const getFeaturedArticle = async (req, res, next) => {
   try {
     const article = await findLatestArticle();
-    console.log(article);
     return res.json(article);
   } catch (error) {
     next(err);
