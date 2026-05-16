@@ -30,6 +30,7 @@ model Article {
   title       String
   slug        String    @unique
   content     Json
+  readTime    Int?
   status      Status    @default(DRAFT)
   comments    Comment[]
   createdAt   DateTime  @default(now())
