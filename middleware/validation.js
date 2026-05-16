@@ -132,6 +132,12 @@ module.exports.validateArticle = [
     })
     .withMessage("Content cannot be empty")
     .bail(),
+  body("readTime")
+    .trim()
+    .optional({ values: "falsy" })
+    .isInt({ min: 1, max: 1000 })
+    .withMessage("Read time must be a whole number between 1-1000")
+    .toInt(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
