@@ -144,7 +144,6 @@ module.exports.validateArticle = [
 module.exports.validateUserUpdate = [
   body("username")
     .trim()
-    .optional({ values: "falsy" })
     .notEmpty()
     .withMessage("Username is required")
     .bail()
@@ -154,15 +153,17 @@ module.exports.validateUserUpdate = [
     .matches(/^[a-zA-Z0-9_-]{3,30}$/)
     .withMessage("Usernames can only contain letters, numbers, _, and -")
     .bail()
-    .custom(async (username) => {
+    .custom(async (username, { req }) => {
       const user = await findUserByUsername(username);
+      if (username === req.user.username) {
+        return true;
+      }
       if (user) {
         throw new Error("Username is not available");
       }
     }),
   body("name")
     .trim()
-    .optional({ values: "falsy" })
     .notEmpty()
     .withMessage("Name is required")
     .bail()
@@ -173,13 +174,15 @@ module.exports.validateUserUpdate = [
     .withMessage("Name contains invalid characters"),
   body("email")
     .trim()
-    .optional({ values: "falsy" })
+    .notEmpty()
+    .withMessage("Email is required")
+    .bail()
     .isEmail()
     .withMessage("Invalid email address")
     .bail()
     .normalizeEmail()
-    .custom(async (email) => {
-      if (!email) {
+    .custom(async (email, { req }) => {
+      if (!email || email === req.user.email) {
         return true;
       }
       const user = await findUserByEmail(email);
@@ -206,12 +209,36 @@ module.exports.validateUserUpdate = [
       return true;
     }),
   body("currentPassword")
-    .if((_, { req }) => req.body.newPassword || req.body.email)
+    .if(
+      (_, { req }) =>
+        req.body.newPassword ||
+        (req.body.email && req.body.email !== req.user.email),
+    )
     .notEmpty()
     .withMessage("Current password is required")
     .bail()
     .isLength({ min: 8, max: 128 })
     .withMessage("Invalid Password"),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+module.exports.validateUsername = [
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("Username is required")
+    .bail()
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage("Username contains invalid characters")
+    .bail()
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Username must be between 3 and 30 characters"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

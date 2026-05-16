@@ -8,6 +8,7 @@ const {
   deleteArticleById,
   findArticlesByQuery,
   findArticleById,
+  findLatestArticle,
 } = require("../services/articleServices");
 const {
   createComment,
@@ -47,6 +48,16 @@ const getArticle = async (req, res, next) => {
 
     return res.json(article);
   } catch (err) {
+    next(err);
+  }
+};
+
+const getFeaturedArticle = async (req, res, next) => {
+  try {
+    const article = await findLatestArticle();
+    console.log(article);
+    return res.json(article);
+  } catch (error) {
     next(err);
   }
 };
@@ -181,6 +192,7 @@ const updateArticle = async (req, res, next) => {
 module.exports = {
   getArticle,
   getPublishedArticles,
+  getFeaturedArticle,
   searchArticles,
   postComment,
   deleteComment,

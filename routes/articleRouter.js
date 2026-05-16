@@ -5,6 +5,7 @@ const {
   deleteComment,
   postComment,
   searchArticles,
+  getFeaturedArticle,
 } = require("../controllers/articleController");
 const { requireAuth, requireOwner } = require("../middleware/auth");
 const { findCommentById } = require("../services/commentServices");
@@ -19,6 +20,7 @@ const ownerCheck = requireOwner({
 
 articleRouter.get("/", getPublishedArticles);
 articleRouter.get("/search", searchArticles);
+articleRouter.get("/featured", getFeaturedArticle);
 articleRouter.get("/:slug", getArticle);
 
 articleRouter.post(

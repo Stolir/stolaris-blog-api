@@ -26,6 +26,16 @@ const findArticleBySlug = (slug) => {
   });
 };
 
+// Get latest for "featured" view
+const findLatestArticle = () => {
+  return prisma.article.findFirst({
+    where: { status: "PUBLISHED" },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
+
 const findArticlesByQuery = (query, status) => {
   return prisma.article.findMany({
     where: { title: { contains: query, mode: "insensitive" }, status },
@@ -55,6 +65,7 @@ module.exports = {
   findArticlesByStatus,
   findArticleById,
   findArticleBySlug,
+  findLatestArticle,
   findArticlesByQuery,
   createArticle,
   deleteArticleById,

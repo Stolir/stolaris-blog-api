@@ -18,7 +18,12 @@ const issueTokenResponse = (res, user) => {
   });
 
   return res.json({
-    user: { id: user.id, username: user.username, name: user.name },
+    user: {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+    },
   });
 };
 
@@ -61,6 +66,7 @@ const getMe = (req, res, next) => {
       id: user.id,
       username: user.username,
       name: user.name,
+      email: user.email,
     },
   });
 };
@@ -72,10 +78,11 @@ const patchUserUpdate = async (req, res, next) => {
   let newHash;
   try {
     const user = await findUserById(userId);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    if (newPassword || data.email) {
+    if (newPassword) {
       // changing password or email requires current password
       const isValidPass = validatePassword(currentPassword, user.password_hash);
       if (!isValidPass) {
@@ -87,10 +94,17 @@ const patchUserUpdate = async (req, res, next) => {
       ...rest,
       ...(newHash && { password_hash: newHash }),
     });
+    return res.json({ user: rest });
   } catch (err) {
     console.error(err);
     next(err);
   }
 };
 
-module.exports = { postUserLogin, postLogout, getMe, postAuthorLogin };
+module.exports = {
+  postUserLogin,
+  postLogout,
+  getMe,
+  postAuthorLogin,
+  patchUserUpdate,
+};

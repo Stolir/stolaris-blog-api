@@ -17,6 +17,7 @@ const registerRouter = require("./routes/registerRouter");
 const authRouter = require("./routes/authRouter");
 const authorRouter = require("./routes/authorRouter");
 const articleRouter = require("./routes/articleRouter");
+const userRouter = require("./routes/userRouter");
 
 // Define app related
 const app = express();
@@ -33,21 +34,14 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Custom middleware
-if (process.env.NODE_ENV === "development") {
-  app.use((req, res, next) => {
-    console.log("Received request");
-    console.log(req.body);
-    next();
-  });
-}
-
 // Use routes
 app.use("/api/register", registerRouter);
 app.use("/auth", authRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/articles", articleRouter);
+app.use("/api/user", userRouter);
 // Generic not found route
+
 app.use((req, res, next) => {
   return res.status(404).json({ message: "Page not found" });
 });
