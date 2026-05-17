@@ -115,11 +115,17 @@ const getAllArticles = async (req, res, next) => {
 
 // post new article
 const postArticle = async (req, res, next) => {
-  const { title, content } = matchedData(req);
+  const { title, content, readTime } = matchedData(req);
   const userId = req.user.id;
   const slug = slugify(title);
   try {
-    const article = await createArticle({ userId, title, content, slug });
+    const article = await createArticle({
+      userId,
+      title,
+      content,
+      slug,
+      ...(readTime && { readTime }),
+    });
     return res.status(201).json(article);
   } catch (err) {
     next(err);

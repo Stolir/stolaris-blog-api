@@ -137,6 +137,7 @@ module.exports.validateArticle = [
     .optional({ values: "falsy" })
     .isInt({ min: 1, max: 1000 })
     .withMessage("Read time must be a whole number between 1-1000")
+    .bail()
     .toInt(),
   (req, res, next) => {
     const errors = validationResult(req);
