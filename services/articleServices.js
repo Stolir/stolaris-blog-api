@@ -2,12 +2,19 @@ const { prisma } = require("../lib/prisma");
 
 // Get All
 const findAllArticles = () => {
-  return prisma.article.findMany();
+  return prisma.article.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 };
 
 // Get by status
 const findArticlesByStatus = (status) => {
-  return prisma.article.findMany({ where: { status } });
+  return prisma.article.findMany({
+    where: { status },
+    orderBy: { createdAt: "desc" },
+  });
 };
 
 // Get by ID
