@@ -31,6 +31,7 @@ const findArticleById = (id) => {
 const findArticleBySlug = (slug) => {
   return prisma.article.findUnique({
     where: { slug },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
