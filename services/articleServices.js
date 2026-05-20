@@ -23,7 +23,6 @@ const findArticlesByStatus = (status) => {
 const findArticleById = (id) => {
   return prisma.article.findUnique({
     where: { id },
-    include: { comments: true },
     include: { user: { select: { name: true, username: true } } },
   });
 };
@@ -32,7 +31,6 @@ const findArticleById = (id) => {
 const findArticleBySlug = (slug) => {
   return prisma.article.findUnique({
     where: { slug },
-    include: { comments: true },
   });
 };
 
