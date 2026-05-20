@@ -4,6 +4,7 @@ const { prisma } = require("../lib/prisma");
 const findCommentById = (id) => {
   return prisma.comment.findUnique({
     where: { id },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
@@ -13,6 +14,7 @@ const findCommentsByArticleId = (articleId) => {
       articleId,
     },
     orderBy: { createdAt: "desc" },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
@@ -20,6 +22,7 @@ const findCommentsByArticleId = (articleId) => {
 const createComment = (data) => {
   return prisma.comment.create({
     data,
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
@@ -39,6 +42,7 @@ const updateCommentById = (id, data) => {
       id,
     },
     data,
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 

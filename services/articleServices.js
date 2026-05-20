@@ -6,6 +6,7 @@ const findAllArticles = () => {
     orderBy: {
       createdAt: "desc",
     },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
@@ -14,6 +15,7 @@ const findArticlesByStatus = (status) => {
   return prisma.article.findMany({
     where: { status },
     orderBy: { createdAt: "desc" },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
@@ -22,6 +24,7 @@ const findArticleById = (id) => {
   return prisma.article.findUnique({
     where: { id },
     include: { comments: true },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
@@ -40,18 +43,21 @@ const findLatestArticle = () => {
     orderBy: {
       createdAt: "desc",
     },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
 const findArticlesByQuery = (query, status) => {
   return prisma.article.findMany({
     where: { title: { contains: query, mode: "insensitive" }, status },
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 // Create
 const createArticle = (data) => {
   return prisma.article.create({
     data,
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 // Delete
@@ -64,6 +70,7 @@ const updateArticleById = (id, data) => {
   return prisma.article.update({
     where: { id },
     data,
+    include: { user: { select: { name: true, username: true } } },
   });
 };
 
