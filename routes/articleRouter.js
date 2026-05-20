@@ -12,28 +12,13 @@ const { findCommentById } = require("../services/commentServices");
 const { validateComment } = require("../middleware/validation");
 
 const articleRouter = Router();
-const ownerCheck = requireOwner({
-  idParam: "commentId",
-  findById: findCommentById,
-  ownerField: "userId",
-});
 
 articleRouter.get("/", getPublishedArticles);
 articleRouter.get("/search", searchArticles);
 articleRouter.get("/featured", getFeaturedArticle);
 articleRouter.get("/:slug", getArticle);
 
-articleRouter.post(
-  "/:slug/comments",
-  requireAuth,
-  validateComment,
-  postComment,
-);
-articleRouter.delete(
-  "/:slug/comments/:commentId",
-  requireAuth,
-  ownerCheck,
-  deleteComment,
-);
+articleRouter.get("/:id/comments", validateComment);
+articleRouter.post("/:id/comments", requireAuth, validateComment, postComment);
 
 module.exports = articleRouter;
