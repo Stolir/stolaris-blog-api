@@ -100,13 +100,20 @@ module.exports.validateLogin = [
 ];
 
 module.exports.validateComment = [
-  body("text")
+  body("comment")
     .trim()
     .notEmpty()
     .withMessage("Comment cannot be empty")
     .bail()
     .isLength({ max: 1000 })
     .withMessage("Comment must be between 1-1000 characters"),
+  body("parentId")
+    .trim()
+    .optional({ values: "falsy" })
+    .isInt()
+    .withMessage("parent ID must be an integer")
+    .bail()
+    .toInt(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
