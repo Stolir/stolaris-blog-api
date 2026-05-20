@@ -12,6 +12,7 @@ const findCommentsByArticleId = (articleId) => {
     where: {
       articleId,
     },
+    orderBy: { createdAt: "desc" },
   });
 };
 

@@ -6,6 +6,7 @@ const {
   postComment,
   searchArticles,
   getFeaturedArticle,
+  getComments,
 } = require("../controllers/articleController");
 const { requireAuth, requireOwner } = require("../middleware/auth");
 const { findCommentById } = require("../services/commentServices");
@@ -18,7 +19,7 @@ articleRouter.get("/search", searchArticles);
 articleRouter.get("/featured", getFeaturedArticle);
 articleRouter.get("/:slug", getArticle);
 
-articleRouter.get("/:id/comments", validateComment);
+articleRouter.get("/:id/comments", getComments);
 articleRouter.post("/:id/comments", requireAuth, validateComment, postComment);
 
 module.exports = articleRouter;

@@ -13,8 +13,10 @@ const {
 const {
   createComment,
   deleteCommentById,
+  findCommentsByArticleId,
 } = require("../services/commentServices");
 const slugify = require("slugify");
+const { buildCommentsTree } = require("../lib/utils");
 
 const getPublishedArticles = async (req, res, next) => {
   try {
@@ -76,14 +78,28 @@ const searchArticles = async (req, res, next) => {
   }
 };
 
+const getComments = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const comments = findCommentsByArticleId(id);
+    if (!comments) {
+      return res.status(404).json({ message: "Comments not found" });
+    }
+    const commentsTree = buildCommentsTree(comments);
+    return res.json(commentsTree);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const postComment = async (req, res, next) => {
   try {
     const data = matchedData(req);
     const comment = await createComment({
       userId: req.user.id,
-      text: data.text,
+      content: data.comment,
       articleId: req.params.articleId ?? null,
-      parentId: req.body.parentId ?? null,
+      parentId: data.parentId ?? null,
     });
     return res.status(201).json(comment);
   } catch (err) {
@@ -199,6 +215,7 @@ module.exports = {
   getPublishedArticles,
   getFeaturedArticle,
   searchArticles,
+  getComments,
   postComment,
   deleteComment,
   getAllArticles,

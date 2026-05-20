@@ -18,6 +18,7 @@ const authRouter = require("./routes/authRouter");
 const authorRouter = require("./routes/authorRouter");
 const articleRouter = require("./routes/articleRouter");
 const userRouter = require("./routes/userRouter");
+const commentRouter = require("./routes/commentRouter");
 
 // Define app related
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/register", registerRouter);
 app.use("/auth", authRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/articles", articleRouter);
+app.use("/api/comments", commentRouter);
 app.use("/api/user", userRouter);
 // Generic not found route
 
