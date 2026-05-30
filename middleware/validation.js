@@ -111,7 +111,7 @@ module.exports.validateComment = [
     .trim()
     .optional({ values: "falsy" })
     .isInt()
-    .withMessage("parent ID must be an integer")
+    .withMessage("Parent ID must be an integer")
     .bail()
     .toInt(),
   (req, res, next) => {
