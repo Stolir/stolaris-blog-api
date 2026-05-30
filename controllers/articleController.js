@@ -81,12 +81,11 @@ const searchArticles = async (req, res, next) => {
 const getComments = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const comments = findCommentsByArticleId(id);
+    const comments = await findCommentsByArticleId(Number(id));
     if (!comments) {
       return res.status(404).json({ message: "Comments not found" });
     }
-    const commentsTree = buildCommentsTree(comments);
-    return res.json(commentsTree);
+    return res.json(comments);
   } catch (err) {
     next(err);
   }
@@ -96,10 +95,10 @@ const postComment = async (req, res, next) => {
   try {
     const data = matchedData(req);
     const comment = await createComment({
-      userId: req.user.id,
+      userId: req.user?.userId,
       content: data.comment,
-      articleId: req.params.articleId ?? null,
-      parentId: data.parentId ?? null,
+      articleId: Number(req.params.id),
+      parentId: data.parentId,
     });
     return res.status(201).json(comment);
   } catch (err) {
