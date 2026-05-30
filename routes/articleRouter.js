@@ -14,12 +14,17 @@ const { validateComment } = require("../middleware/validation");
 
 const articleRouter = Router();
 
+const devLog = (req, res, next) => {
+  console.log(req.params, req.body);
+  next();
+};
+
 articleRouter.get("/", getPublishedArticles);
 articleRouter.get("/search", searchArticles);
 articleRouter.get("/featured", getFeaturedArticle);
 articleRouter.get("/:slug", getArticle);
 
 articleRouter.get("/:id/comments", getComments);
-articleRouter.post("/:id/comments", requireAuth, validateComment, postComment);
+articleRouter.post("/:id/comments", validateComment, postComment);
 
 module.exports = articleRouter;
