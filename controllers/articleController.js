@@ -70,7 +70,6 @@ const searchArticles = async (req, res, next) => {
     status = "PUBLISHED";
   }
   try {
-    console.log("1");
     const articles = await findArticlesByQuery(query, status || undefined);
     return res.json(articles);
   } catch (err) {
@@ -95,7 +94,7 @@ const postComment = async (req, res, next) => {
   try {
     const data = matchedData(req);
     const comment = await createComment({
-      userId: req.user?.userId,
+      userId: req.user?.id,
       content: data.comment,
       articleId: Number(req.params.id),
       parentId: data.parentId,

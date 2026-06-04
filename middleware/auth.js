@@ -1,6 +1,18 @@
 const passport = require("passport");
 
 const requireAuth = passport.authenticate("jwt", { session: false });
+const optionalAuth = (req, res, next) =>
+  passport.authenticate("jwt", { session: false }, (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      next();
+    } else {
+      req.user = user;
+      next();
+    }
+  })(req, res, next);
 
 const requireAuthor = (req, res, next) => {
   if (!req.user.isAuthor) {
@@ -33,4 +45,4 @@ const requireOwner = ({ idParam, findById, ownerField }) => {
   };
 };
 
-module.exports = { requireAuth, requireAuthor, requireOwner };
+module.exports = { requireAuth, optionalAuth, requireAuthor, requireOwner };
