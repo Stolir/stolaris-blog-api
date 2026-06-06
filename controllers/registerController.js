@@ -21,7 +21,7 @@ const postRegistration = async (req, res, next) => {
         id: user.id,
         username: user.username,
         name: user.name,
-        isAuthor: user.isAuthor,
+        email: user.email,
       },
     });
   } catch (err) {
