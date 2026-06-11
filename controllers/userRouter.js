@@ -3,6 +3,7 @@ const {
   findUserByUsername,
   findUserById,
 } = require("../services/userServices");
+const { findCommentsByUserId } = require("../services/commentServices");
 
 const postUsernameAttempt = async (req, res, next) => {
   const { username } = matchedData(req);
@@ -33,4 +34,14 @@ const getUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser, postUsernameAttempt };
+const getUserComments = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const comments = await findCommentsByUserId(Number(userId));
+    return res.json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getUser, postUsernameAttempt, getUserComments };

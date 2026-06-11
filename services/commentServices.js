@@ -18,10 +18,18 @@ const findCommentsByArticleId = (articleId) => {
   });
 };
 
+const findCommentsByUserId = (userId) => {
+  return prisma.comment.findMany({
+    where: { userId },
+    include: { user: { select: { name: true, username: true } } },
+  });
+};
+
 // Create
 const createComment = (data) => {
   return prisma.comment.create({
     data,
+    orderBy: { createdAt: "desc" },
     include: { user: { select: { name: true, username: true } } },
   });
 };
@@ -49,6 +57,7 @@ const updateCommentById = (id, data) => {
 module.exports = {
   findCommentById,
   findCommentsByArticleId,
+  findCommentsByUserId,
   createComment,
   deleteCommentById,
   updateCommentById,

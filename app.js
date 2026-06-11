@@ -41,7 +41,7 @@ app.use("/auth", authRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/comments", commentRouter);
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 // Generic not found route
 
 app.use((req, res, next) => {
