@@ -108,7 +108,7 @@ const postComment = async (req, res, next) => {
 const deleteComment = async (req, res, next) => {
   const { commentId } = req.params;
   try {
-    await deleteCommentById(commentId);
+    await deleteCommentById(Number(commentId));
     return res.sendStatus(204);
   } catch (err) {
     next(err);
