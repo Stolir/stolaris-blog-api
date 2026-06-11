@@ -29,7 +29,6 @@ const findCommentsByUserId = (userId) => {
 const createComment = (data) => {
   return prisma.comment.create({
     data,
-    orderBy: { createdAt: "desc" },
     include: { user: { select: { name: true, username: true } } },
   });
 };
