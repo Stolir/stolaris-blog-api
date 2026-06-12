@@ -1,6 +1,18 @@
 const { prisma } = require("../lib/prisma");
 
 // Get
+const findAllComments = () => {
+  return prisma.comment.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      user: { select: { name: true, username: true } },
+      article: { select: { title: true, createdAt: true } },
+    },
+  });
+};
+
 const findCommentById = (id) => {
   return prisma.comment.findUnique({
     where: { id },
@@ -54,6 +66,7 @@ const updateCommentById = (id, data) => {
 };
 
 module.exports = {
+  findAllComments,
   findCommentById,
   findCommentsByArticleId,
   findCommentsByUserId,
