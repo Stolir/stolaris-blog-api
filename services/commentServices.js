@@ -9,6 +9,9 @@ const findAllComments = () => {
     include: {
       user: { select: { name: true, username: true } },
       article: { select: { title: true, createdAt: true } },
+      parent: {
+        select: { id: true, user: { select: { username: true, name: true } } },
+      },
     },
   });
 };
