@@ -105,16 +105,6 @@ const postComment = async (req, res, next) => {
   }
 };
 
-const deleteComment = async (req, res, next) => {
-  const { commentId } = req.params;
-  try {
-    await deleteCommentById(Number(commentId));
-    return res.sendStatus(204);
-  } catch (err) {
-    next(err);
-  }
-};
-
 // =========== AUTHOR PROTECTED ACTIONS ==============
 
 // Retrieves all articles regardless of their status
@@ -215,7 +205,6 @@ module.exports = {
   searchArticles,
   getComments,
   postComment,
-  deleteComment,
   getAllArticles,
   postArticle,
   publishArticle,

@@ -1,4 +1,7 @@
-const { findAllComments } = require("../services/commentServices");
+const {
+  findAllComments,
+  deleteCommentById,
+} = require("../services/commentServices");
 
 const getAllComments = async (req, res, next) => {
   try {
@@ -9,4 +12,14 @@ const getAllComments = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllComments };
+const deleteComment = async (req, res, next) => {
+  const { commentId } = req.params;
+  try {
+    await deleteCommentById(Number(commentId));
+    return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getAllComments, deleteComment };
