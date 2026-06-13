@@ -15,7 +15,7 @@ const deleteAuthCheck = (req, res, next) => {
   if (req.user.isAuthor) {
     return next();
   } else {
-    return ownerCheck();
+    return ownerCheck(req, res, next);
   }
 };
 
