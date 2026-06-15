@@ -36,6 +36,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Use routes
+app.get("/health", (req, res) => res.json({ status: "ok" }));
+
 app.use("/api/register", registerRouter);
 app.use("/auth", authRouter);
 app.use("/api/author", authorRouter);
