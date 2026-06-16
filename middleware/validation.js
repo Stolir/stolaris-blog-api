@@ -188,9 +188,7 @@ module.exports.validateUserUpdate = [
     .withMessage("Name contains invalid characters"),
   body("email")
     .trim()
-    .notEmpty()
-    .withMessage("Email is required")
-    .bail()
+    .optional({ values: "falsy" })
     .isEmail()
     .withMessage("Invalid email address")
     .bail()
