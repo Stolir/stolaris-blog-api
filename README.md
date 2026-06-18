@@ -1,4 +1,4 @@
-# Stolaris Blog API - Technical Documentation
+# Stolaris Blog API
 
 ## Table of Contents
 
