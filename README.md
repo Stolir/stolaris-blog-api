@@ -188,6 +188,7 @@ Live: https://abdelrahman‑blog.netlify.app/
 **Author front‑end**  
 Repo: https://github.com/Stolir/stolaris-author-frontend  
 Live: https://abdelrahman‑blog‑author.netlify.app/
-_Note the author site does not support creating new accounts please use the credentials below:_
-**username:** stolaris
+
+_Note the author site does not support creating new accounts please use the credentials below:_  
+**username:** stolaris  
 **password:** stolarisAuthor
