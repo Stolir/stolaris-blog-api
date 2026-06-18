@@ -2,21 +2,22 @@
 
 ## Table of Contents
 
-1.  [Introduction](#introduction)
-2.  [Architecture](#architecture)
-3.  [Data Models](#data-models)
-4.  [API Endpoints](#api-endpoints)
+1.  [Introduction](#1-introduction)
+2.  [Architecture](#2-architecture)
+3.  [Data Models](#3-data-models)
+4.  [API Endpoints](#4-api-endpoints)
     - [Authentication & Registration](#authentication--registration)
     - [Articles](#articles)
     - [Authors](#authors)
     - [Comments](#comments)
     - [Users](#users)
-5.  [Authentication & Authorization](#authentication--authorization)
-6.  [Validation](#validation)
+5.  [Authentication & Authorization](#5-authentication--authorization)
+6.  [Validation](#6-validation)
+7.  [Live Preview](#7-live-preview)
 
 ## 1. Introduction
 
-Stolaris Blog API, is a RESTFul backend build with Node.js, Express, Passport.js, and JWT authentication. Allowing user registration, login, and CRUD operations for blog posts, with protected routes for both types of user roles (reader, author).
+Stolaris Blog API, is a RESTFul backend build with Node.js, Express, Passport.js, and JWT authentication. Allowing user registration, login, and CRUD operations for blog posts, with protected routes for both types of user roles (reader, author). To view this project checkout the [live preview](#7-live-preview) section below.
 
 ## 2. Architecture
 
@@ -175,3 +176,19 @@ Input validation is handled by `express-validator` and defined in `middleware/va
 - `validateArticle`: Validates article title, content, and read time.
 - `validateUserUpdate`: Validates user profile update data, including username, name, email, and password changes.
 - `validateUsername`: Validates username format and availability.
+
+## 7. Live Preview
+
+Feel free to view and experiment with this project:
+
+User front-end:
+Repo: https://github.com/Stolir/stolaris-user-frontend
+Live: https://abdelrahman-blog.netlify.app/
+
+Author front-end:
+Repo: https://github.com/Stolir/stolaris-author-frontend
+Live: https://abdelrahman-blog-author.netlify.app/
+
+_Note the author site does not support creating new accounts please use the credentials below:_
+**username:** stolaris
+**password:** stolarisAuthor
