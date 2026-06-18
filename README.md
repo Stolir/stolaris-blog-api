@@ -13,7 +13,6 @@
     - [Users](#users)
 5.  [Authentication & Authorization](#authentication--authorization)
 6.  [Validation](#validation)
-7.  [Usage](#usage)
 
 ## 1. Introduction
 
