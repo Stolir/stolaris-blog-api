@@ -181,14 +181,13 @@ Input validation is handled by `express-validator` and defined in `middleware/va
 
 Feel free to view and experiment with this project:
 
-User front-end:
-Repo: https://github.com/Stolir/stolaris-user-frontend
-Live: https://abdelrahman-blog.netlify.app/
+**User front‑end**  
+Repo: https://github.com/Stolir/stolaris-user-frontend  
+Live: https://abdelrahman‑blog.netlify.app/
 
-Author front-end:
-Repo: https://github.com/Stolir/stolaris-author-frontend
-Live: https://abdelrahman-blog-author.netlify.app/
-
+**Author front‑end**  
+Repo: https://github.com/Stolir/stolaris-author-frontend  
+Live: https://abdelrahman‑blog‑author.netlify.app/
 _Note the author site does not support creating new accounts please use the credentials below:_
 **username:** stolaris
 **password:** stolarisAuthor
